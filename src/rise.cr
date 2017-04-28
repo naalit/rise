@@ -4,7 +4,7 @@ require "http/client"
 module Rise
 
 engine = Engine.new
-if !ARGV[0]
+if !ARGV[0]?
   puts engine.run(%{
   <html>
       <body>
