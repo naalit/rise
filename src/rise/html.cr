@@ -49,13 +49,10 @@ class Parser
   end
 
   def parse_tag_name
-    puts next_char
-    puts next_char.alphanumeric?
     consume_while { next_char.alphanumeric? }
   end
 
   def parse_node
-    puts "Parsing Node..."
     case next_char
     when '<'
       parse_element
@@ -65,20 +62,17 @@ class Parser
   end
 
   def parse_text
-    puts "Parsing text..."
     DOM::TextNode.new consume_while {
       next_char != '<'
     }
   end
 
   def parse_element
-    puts "Parsing element..."
     if (consume == '<')
     else
       puts "YOUR HTML IS BROKEN! FIX IT NOW! Either that, or I have a BAD bug in this here parse code. Reason: I couldn't find an opening tag, even though I already looked for one and found it - okay, so the problem is probably on my end. Submit a bug report, then, if those exist yet. We'll call this ERROR No. 8192."
     end
     tag_name = parse_tag_name
-    puts tag_name
     attrs = parse_attributes
     if (consume == '>')
     else
@@ -117,7 +111,6 @@ class Parser
 
       # parse_attr in the tutorials
       name = parse_tag_name
-      puts "attr: " + name
       if (consume == '=')
       else
         puts "YOUR HTML IS BROKEN! FIX IT NOW! Either that, or I have a BAD bug in this here parse code. Reason: I couldn't find a '=' on your attribute."
@@ -132,16 +125,13 @@ class Parser
 
   def parse_nodes
     nodes = Array(DOM::Node).new
-    puts "parse_nodes running..."
     loop {
       consume_whitespace
-      puts "consume_whitespace ran."
       if eof || starts_with "</"
         break
       end
       nodes.push parse_node
     }
-    puts "That loop's over."
     nodes
   end
 
@@ -163,7 +153,6 @@ class Parser
 end
 
 def parse(source : String)
-  puts "Parsing..."
   nodes = Parser.new(source).parse_nodes
 
   # Root element handling
